@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- REPLACE: page title + description -->
+<title>Tanish Dogra — Decision Scientist</title>
+<meta name="description" content="Portfolio of Tanish Dogra, Trainee Decision Scientist at Mu Sigma">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--fg:#ecebf5;--mut:#8d8ba3;--a:#22e1ff;--b:#a855f7;--g:linear-gradient(120deg,var(--a),var(--b));--glass:rgba(255,255,255,.05);--line:rgba(255,255,255,.12)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+#bg{position:fixed;inset:0;z-index:0;width:100%;height:100%}
+main,nav,footer{position:relative;z-index:2}
+section{min-height:100vh;padding:110px 6vw 70px;max-width:1200px;margin:auto;display:flex;flex-direction:column;justify-content:center}
+h2{font-size:clamp(2rem,5vw,3.4rem);font-weight:700;letter-spacing:-.02em;margin-bottom:2.2rem;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent;width:fit-content}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:18px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:.4s ease}
+.glass:hover{border-color:rgba(34,225,255,.5);box-shadow:0 0 30px rgba(168,85,247,.25)}
+:focus-visible{outline:2px solid var(--a);outline-offset:3px}
+
+/* Loader */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;transition:opacity .6s,visibility .6s}
+#loader.done{opacity:0;visibility:hidden}
+.bar{width:min(280px,70vw);height:4px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--g);box-shadow:0 0 12px var(--a);transition:width .2s}
+#pct{color:var(--mut);font-size:.9rem}
+
+/* Cursor */
+#cur,#dot{position:fixed;top:0;left:0;pointer-events:none;z-index:99;border-radius:50%;display:none}
+#cur{width:36px;height:36px;border:1.5px solid var(--a);margin:-18px 0 0 -18px;transition:width .25s,height .25s,margin .25s,background .25s}
+#dot{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--b)}
+#cur.hot{width:64px;height:64px;margin:-32px 0 0 -32px;background:rgba(34,225,255,.12)}
+@media (hover:hover) and (pointer:fine){#cur,#dot{display:block}body.fx,body.fx a,body.fx button{cursor:none}}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:16px 6vw;background:rgba(10,10,10,.55);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.logo{font-weight:700;font-size:1.2rem}
+nav ul{display:flex;gap:1.6rem;list-style:none}
+nav ul a{color:var(--mut);font-size:.95rem;padding:4px 0;border-bottom:2px solid transparent;transition:.3s}
+nav ul a.on,nav ul a:hover{color:var(--fg);border-color:var(--a)}
+#burger{display:none;background:none;border:0;color:var(--fg);font-size:1.6rem}
+@media(max-width:760px){#burger{display:block}nav ul{position:absolute;top:100%;left:0;right:0;flex-direction:column;background:rgba(10,10,10,.95);padding:1rem 6vw;display:none}nav ul.open{display:flex}}
+
+/* Hero */
+#hero{align-items:flex-start}
+#hero h1{font-size:clamp(2.6rem,8vw,6rem);font-weight:700;line-height:1.05;letter-spacing:-.03em}
+#hero h1 span{background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+#hero h3{font-weight:400;font-size:clamp(1.1rem,2.4vw,1.6rem);color:var(--a);margin:1rem 0}
+#hero p{color:var(--mut);max-width:34ch;margin-bottom:2rem}
+.btn{display:inline-block;padding:13px 28px;border-radius:40px;font-weight:500;border:1px solid var(--line);margin:0 12px 12px 0;transition:.3s;background:none;color:var(--fg);font-family:inherit;font-size:1rem}
+.btn.p{background:var(--g);border:0;color:#06060a}
+.btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 0 26px rgba(34,225,255,.45)}
+
+/* About */
+#about p{font-size:clamp(1.2rem,2.6vw,1.9rem);max-width:30em;line-height:1.5}
+.w{display:inline-block;opacity:.12;transition:opacity .5s}
+.w.on{opacity:1}
+
+/* Skills */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:26px;perspective:900px}
+.skill{padding:28px 16px;text-align:center;transform-style:preserve-3d;animation:fl 5s ease-in-out infinite}
+.skill:nth-child(2n){animation-delay:-1.6s}.skill:nth-child(3n){animation-delay:-3.2s}
+@keyframes fl{50%{translate:0 -10px}}
+.skill:hover{transform:rotateY(18deg) rotateX(-8deg) scale(1.06)}
+.ring{width:110px;height:110px;margin:0 auto 14px;transform:translateZ(40px)}
+.ring circle{fill:none;stroke-width:8;stroke-linecap:round}
+.ring .t{stroke:var(--line)}
+.ring .v{stroke:url(#rg);stroke-dasharray:289;stroke-dashoffset:289;transition:stroke-dashoffset 1.6s ease;transform:rotate(-90deg);transform-origin:50% 50%}
+.ring text{fill:var(--fg);font-size:22px;font-weight:700;text-anchor:middle;dominant-baseline:central}
+.skill b{transform:translateZ(30px);display:block}
+
+/* Timeline */
+#tl{perspective:1100px;position:relative;padding-left:34px;border-left:2px solid;border-image:var(--g) 1}
+.job{padding:26px;margin-bottom:34px;position:relative;transition:transform .15s linear,border-color .4s,box-shadow .4s;transform-origin:left center}
+.job::before{content:"";position:absolute;left:-43px;top:34px;width:16px;height:16px;border-radius:50%;background:var(--g);box-shadow:0 0 14px var(--a)}
+.job small{color:var(--a)}.job h4{font-size:1.3rem}.job em{color:var(--mut);font-style:normal}
+.job p{margin-top:.6rem;color:#c9c8d8}
+
+/* Education */
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px}
+.card{padding:28px}.card small{color:var(--a)}.card h4{font-size:1.25rem;margin:.3rem 0}.card p{color:var(--mut)}
+
+/* Projects */
+.flip{perspective:1000px;height:290px;cursor:pointer}
+.in{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.flip:hover .in,.flip.on .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;padding:26px;display:flex;flex-direction:column;justify-content:space-between}
+.face.back{transform:rotateY(180deg);background:linear-gradient(145deg,rgba(34,225,255,.14),rgba(168,85,247,.2))}
+.face h4{font-size:1.4rem}.face p{color:#c9c8d8;font-size:.95rem}
+.tags span{display:inline-block;font-size:.78rem;border:1px solid var(--line);border-radius:20px;padding:2px 10px;margin:0 6px 6px 0;color:var(--a)}
+.face a{color:var(--a);font-weight:500}
+
+
+/* Contact */
+.ct{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:34px;align-items:start}
+form{padding:28px}
+.f{position:relative;margin-bottom:22px}
+.f input,.f textarea{width:100%;background:transparent;border:0;border-bottom:1.5px solid var(--line);color:var(--fg);font:inherit;padding:18px 0 8px;transition:.3s;resize:vertical}
+.f input:focus,.f textarea:focus{outline:0;border-color:var(--a)}
+.f label{position:absolute;left:0;top:18px;color:var(--mut);pointer-events:none;transition:.3s}
+.f input:focus+label,.f input:not(:placeholder-shown)+label,.f textarea:focus+label,.f textarea:not(:placeholder-shown)+label{top:-2px;font-size:.75rem;color:var(--a)}
+.soc{display:flex;gap:14px;margin-top:1.4rem;flex-wrap:wrap}
+.soc a{width:52px;height:52px;display:grid;place-items:center;border-radius:50%;font-weight:700}
+.soc a:hover{transform:translateY(-5px) rotate(8deg)}
+#ok{color:var(--a);margin-top:10px;min-height:1.4em}
+footer{text-align:center;color:var(--mut);padding:30px;font-size:.85rem}
+.rv{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s ease}
+.rv.on{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}html{scroll-behavior:auto}.rv,.w{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="loader"><div style="font-weight:700;font-size:1.4rem">Loading portfolio</div><div class="bar"><i id="fill"></i></div><div id="pct">0%</div></div>
+<div id="cur"></div><div id="dot"></div>
+<canvas id="bg" aria-hidden="true"></canvas>
+<nav>
+  <a href="#hero" class="logo">Tanish Dogra</a>
+  <button id="burger" aria-label="Menu">☰</button>
+  <ul id="menu">
+    <li><a href="#about">About</a></li><li><a href="#skills">Skills</a></li><li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li><li><a href="#projects">Projects</a></li><li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+<main>
+<section id="hero">
+  <h1>Hi, I'm<br><span>Tanish Dogra</span></h1>
+  <h3>Trainee Decision Scientist @ Mu Sigma</h3>
+  <p>I turn data into decisions with Python, SQL and Power BI. Based in Bengaluru.</p>
+  <div><a class="btn p" href="#projects">View my work</a><a class="btn" href="#contact">Get in touch</a></div>
+</section>
+<section id="about">
+  <h2>About me</h2>
+  <p id="bio">I'm a Trainee Decision Scientist at Mu Sigma in Bengaluru, working with Python, MySQL, Power BI and Tableau. I completed my B.Tech in Computer Science (AI/ML) at Lovely Professional University, with a foundation in statistics, EDA and machine learning. I led The Invincibles analytics club as President, and I enjoy design, web interfaces and learning new tools.</p>
+</section>
+<section id="skills">
+  <h2>Skills</h2>
+  <!-- Edit data-v (percent) to change a ring -->
+  <div class="grid" id="skgrid">
+    <div class="glass skill rv" data-v="88"><b>Excel</b></div>
+    <div class="glass skill rv" data-v="85"><b>MySQL</b></div>
+    <div class="glass skill rv" data-v="85"><b>Power BI</b></div>
+    <div class="glass skill rv" data-v="80"><b>Python</b></div>
+    <div class="glass skill rv" data-v="78"><b>Statistics &amp; EDA</b></div>
+    <div class="glass skill rv" data-v="75"><b>Machine Learning</b></div>
+  </div>
+</section>
+<section id="experience">
+  <h2>Experience</h2>
+  <div id="tl">
+    <article class="glass job"><small>Aug 2025 – Present</small><h4>Trainee Decision Scientist</h4><em>Mu Sigma Inc. · Bengaluru</em><p>Applying SQL, Python and BI tools (Power BI, Tableau) to business analytics problems as part of the decision science team.</p></article>
+    <article class="glass job"><small>Jun 2024 – Aug 2025</small><h4>President &amp; Social Media Manager</h4><em>The Invincibles · LPU, Jalandhar</em><p>Led the university's analytics club as President (Jun 2024 – Aug 2025). As Social Media Manager (Oct 2023 – Aug 2025), handled social media, graphic design and content writing.</p></article>
+    <article class="glass job"><small>Nov 2023</small><h4>Data Analyst Intern</h4><em>CSRBOX × IBM · Gurugram</em><p>Micro-internship on IBM SkillsBuild covering Python and data analytics.</p></article>
+    <article class="glass job"><small>Aug – Sep 2023</small><h4>Machine Learning Intern</h4><em>Bharat Intern · Online</em><p>Built a Wine Quality Prediction model (92.5% accuracy) and a House Price Prediction model (97% accuracy).</p></article>
+    <article class="glass job"><small>Jun – Jul 2023</small><h4>Web Application Developer Intern</h4><em>Tantranzm Academy · Faridabad</em><p>Built an authentication system in PHP for ATS and a Client Management System, using HTML, CSS, JS, SQL and PHP.</p></article>
+    <article class="glass job"><small>Jun 2022 – Feb 2025</small><h4>Graphic Designer &amp; Community Roles</h4><em>Coding Ninjas LPU · WAO Federation</em><p>Graphic designer and coordinator at Coding Ninjas LPU; co-head of the graphics team and later Emeritus Member at WAO Federation; campus ambassador for ThinkWht and Skillish.</p></article>
+  </div>
+</section>
+<section id="education">
+  <h2>Education</h2>
+  <div class="two">
+    <div class="glass card rv"><small>Sep 2021 – Sep 2025</small><h4>Bachelor's degree, Computer Science</h4><p>Lovely Professional University<br>B.Tech CSE (AI/ML)</p></div>
+    <div class="glass card rv"><small>Sep 2021 – Jun 2025</small><h4>Data Science</h4><p>upGrad</p></div>
+    <div class="glass card rv"><small>Certifications</small><h4>Learning &amp; Credentials</h4><p>Learning SQL Programming<br>DevOps Tools: Linux Command Line<br>Intro to Cloud Computing for IT Pros<br>AI Foundations: Thinking Machines<br>Intro to Programming Using HTML and CSS</p></div>
+  </div>
+</section>
+<section id="projects">
+  <h2>Projects</h2>
+  <div class="grid" style="perspective:none;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))">
+    <div class="flip rv" tabindex="0"><div class="in"><div class="face glass"><h4>House Price Prediction</h4><p>Regression model, 97% accuracy.</p><small>Hover or tap to flip</small></div><div class="face back glass"><p>Machine learning model built during the Bharat Intern virtual internship to predict house prices from property features.</p><div class="tags"><span>Python</span><span>Machine Learning</span></div><a href="https://github.com/Thorus-Slughorm/house_price_prediction" target="_blank" rel="noopener">View on GitHub</a></div></div></div>
+    <div class="flip rv" tabindex="0"><div class="in"><div class="face glass"><h4>Wine Quality Prediction</h4><p>Classification model, 92.5% accuracy.</p><small>Hover or tap to flip</small></div><div class="face back glass"><p>Machine learning model built during the Bharat Intern virtual internship to predict wine quality from chemical properties.</p><div class="tags"><span>Python</span><span>Machine Learning</span></div><a href="https://github.com/Thorus-Slughorm/Wine-quality-prediction" target="_blank" rel="noopener">View on GitHub</a></div></div></div>
+    <div class="flip rv" tabindex="0"><div class="in"><div class="face glass"><h4>ATS Authentication System</h4><p>Secure login system in PHP.</p><small>Hover or tap to flip</small></div><div class="face back glass"><p>Authentication system for ATS built during the Tantranzm Academy internship.</p><div class="tags"><span>PHP</span><span>SQL</span><span>HTML/CSS</span></div><a href="https://github.com/Thorus-Slughorm" target="_blank" rel="noopener">View on GitHub</a></div></div></div>
+    <div class="flip rv" tabindex="0"><div class="in"><div class="face glass"><h4>Client Management System</h4><p>Manage client records.</p><small>Hover or tap to flip</small></div><div class="face back glass"><p>Client Management System built during the Tantranzm Academy internship.</p><div class="tags"><span>PHP</span><span>SQL</span><span>JS</span></div><a href="https://github.com/Thorus-Slughorm" target="_blank" rel="noopener">View on GitHub</a></div></div></div>
+  </div>
+</section>
+<section id="contact">
+  <h2>Contact</h2>
+  <div class="ct">
+    <form class="glass" id="form">
+      <div class="f"><input id="n" placeholder=" " required><label for="n">Name</label></div>
+      <div class="f"><input id="e" type="email" placeholder=" " required><label for="e">Email</label></div>
+      <div class="f"><textarea id="m" rows="4" placeholder=" " required></textarea><label for="m">Message</label></div>
+      <button class="btn p" type="submit">Send message</button><div id="ok" role="status"></div>
+    </form>
+    <div>
+      <p style="color:var(--mut);max-width:30ch">Open to data science and analytics roles and projects. Send a message or find me online.</p>
+      <div class="soc">
+        <a class="glass" href="https://www.linkedin.com/in/tanish-dogra/" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+        <a class="glass" href="https://github.com/Thorus-Slughorm" target="_blank" rel="noopener" aria-label="GitHub">gh</a>
+        <a class="glass" href="mailto:tanishdogra6794@gmail.com" aria-label="Email">@</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<footer>© <span id="yr"></span> Tanish Dogra</footer>
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22e1ff"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs></svg>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const $=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>[...c.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+$('#yr').textContent=new Date().getFullYear();
+let p=0,loaded=document.readyState==='complete';
+addEventListener('load',()=>loaded=true);
+(function tick(){p=Math.min(p+(loaded?8:Math.random()*2.2),loaded?100:90);
+  $('#fill').style.width=p+'%';$('#pct').textContent=Math.floor(p)+'%';
+  if(p<100)requestAnimationFrame(tick);else setTimeout(()=>$('#loader').classList.add('done'),300)})();
+setTimeout(()=>$('#loader').classList.add('done'),6000);
+if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+  document.body.classList.add('fx');let cx=0,cy=0,tx=0,ty=0;
+  addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;$('#dot').style.transform=`translate(${tx}px,${ty}px)`});
+  (function f(){cx+=(tx-cx)*.18;cy+=(ty-cy)*.18;$('#cur').style.transform=`translate(${cx}px,${cy}px)`;requestAnimationFrame(f)})();
+  document.addEventListener('mouseover',e=>$('#cur').classList.toggle('hot',!!e.target.closest('a,button,.flip,.skill,input,textarea')));
+}
+$('#burger').onclick=()=>$('#menu').classList.toggle('open');
+$$('#menu a').forEach(a=>a.onclick=()=>$('#menu').classList.remove('open'));
+const links=$$('#menu a');
+const navIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(l=>l.classList.toggle('on',l.hash==='#'+e.target.id))}),{threshold:.4});
+$$('main section').forEach(s=>navIO.observe(s));
+$$('#skgrid .skill').forEach(s=>{const v=s.dataset.v;
+  s.insertAdjacentHTML('afterbegin',`<svg class="ring" viewBox="0 0 110 110"><circle class="t" cx="55" cy="55" r="46"/><circle class="v" cx="55" cy="55" r="46" data-v="${v}"/><text x="55" y="55">${v}%</text></svg>`)});
+const bio=$('#bio');bio.innerHTML=bio.textContent.split(' ').map(w=>`<span class="w">${w}</span>`).join(' ');
+const rvIO=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;
+  const el=e.target,i=[...el.parentNode.children].indexOf(el);
+  setTimeout(()=>{el.classList.add('on');const r=$('.v',el);if(r)r.style.strokeDashoffset=289*(1-r.dataset.v/100)},i*110);rvIO.unobserve(el)}),{threshold:.2});
+$$('.rv').forEach(el=>rvIO.observe(el));
+const bioIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){$$('.w',bio).forEach((w,i)=>setTimeout(()=>w.classList.add('on'),i*45));bioIO.disconnect()}}),{threshold:.4});
+bioIO.observe(bio);
+const jobs=$$('.job');
+function depth(){if(reduce)return;const h=innerHeight/2;
+  jobs.forEach(j=>{const r=j.getBoundingClientRect(),d=Math.max(-1,Math.min(1,(r.top+r.height/2-h)/h));
+    j.style.transform=`translateZ(${-Math.abs(d)*120}px) rotateY(${d*-14}deg) rotateX(${d*8}deg)`;j.style.opacity=1-Math.abs(d)*.45})}
+$$('.flip').forEach(f=>{f.onclick=e=>{if(!e.target.closest('a'))f.classList.toggle('on')};
+  f.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f.classList.toggle('on')}}});
+
+/* Contact form: front-end only. REPLACE with Formspree / your backend endpoint */
+$('#form').onsubmit=e=>{e.preventDefault();$('#ok').textContent='Message ready. Connect a form service to send it.';e.target.reset()};
+
+/* ===== THREE.JS: one fixed canvas = torus knot (hero) + particles + wave mesh reacting to scroll ===== */
+if(window.THREE&&!reduce){
+  const cv=$('#bg'),low=innerWidth<700||(navigator.hardwareConcurrency||8)<4;
+  const R=new THREE.WebGLRenderer({canvas:cv,antialias:!low,alpha:true});
+  R.setPixelRatio(Math.min(devicePixelRatio,low?1:2));
+  const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(60,1,.1,200);C.position.z=12;
+  const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(2.1,.62,low?120:220,low?16:28),
+    new THREE.MeshStandardMaterial({color:0x22e1ff,emissive:0x5b21b6,emissiveIntensity:.5,metalness:.7,roughness:.25,wireframe:false}));
+  const wire=new THREE.Mesh(knot.geometry,new THREE.MeshBasicMaterial({color:0xa855f7,wireframe:true,transparent:true,opacity:.18}));
+  const G=new THREE.Group();G.add(knot,wire);S.add(G);
+  S.add(new THREE.AmbientLight(0x6666aa,.8));
+  const l1=new THREE.PointLight(0x22e1ff,2.2,60);l1.position.set(8,6,8);S.add(l1);
+  const l2=new THREE.PointLight(0xa855f7,2.2,60);l2.position.set(-8,-6,6);S.add(l2);
+  // particles
+  const N=low?500:1400,pa=new Float32Array(N*3);
+  for(let i=0;i<N*3;i++)pa[i]=(Math.random()-.5)*60;
+  const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pa,3));
+  const pts=new THREE.Points(pg,new THREE.PointsMaterial({size:.07,color:0x9be8ff,transparent:true,opacity:.7}));S.add(pts);
+  // wave mesh
+  const W=new THREE.Mesh(new THREE.PlaneGeometry(60,40,low?30:60,low?20:40),new THREE.MeshBasicMaterial({color:0x7c3aed,wireframe:true,transparent:true,opacity:.1}));
+  W.rotation.x=-1.2;W.position.y=-9;S.add(W);
+  const wp=W.geometry.attributes.position,base=Array.from(wp.array);
+  let mx=0,my=0,sy=0,run=true,t=0;
+  addEventListener('mousemove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+  addEventListener('scroll',()=>{sy=scrollY;depth()},{passive:true});
+  function size(){R.setSize(innerWidth,innerHeight,false);C.aspect=innerWidth/innerHeight;C.updateProjectionMatrix()}
+  addEventListener('resize',()=>{size();depth()});size();depth();
+  document.addEventListener('visibilitychange',()=>{run=!document.hidden;if(run)loop()});
+  function loop(){if(!run)return;requestAnimationFrame(loop);t+=.01;
+    const prog=sy/Math.max(1,document.body.scrollHeight-innerHeight),wide=innerWidth>900;
+    // knot: parallax to mouse, drifts away + shrinks as you scroll
+    G.rotation.y+=(mx*1.6+t*.5-G.rotation.y)*.05;G.rotation.x+=(my*1.2+t*.3-G.rotation.x)*.05;
+    G.position.x+=((wide?4.2:0)-G.position.x)*.05;G.position.y=Math.min(sy/120,8);
+    G.scale.setScalar(Math.max(.2,1-sy/(innerHeight*1.2)));
+    pts.rotation.y=t*.05+prog*3;pts.rotation.x=prog*1.5;
+    C.position.z=12-prog*4;C.position.x=mx*1.2;C.lookAt(0,0,0);
+    // wave
+    const a=wp.array;for(let i=0;i<a.length;i+=3){const x=base[i],y=base[i+1];
+      a[i+2]=Math.sin(x*.4+t*2+prog*8)*1.1+Math.cos(y*.5+t*1.5)*.9}
+    wp.needsUpdate=true;W.position.y=-9+prog*6;
+    R.render(S,C)}
+  loop();
+}else{
+  // Fallback: no WebGL / reduced motion → static gradient glow
+  $('#bg').style.display='none';
+  document.body.style.background='radial-gradient(circle at 75% 15%,rgba(168,85,247,.25),transparent 45%),radial-gradient(circle at 15% 70%,rgba(34,225,255,.15),transparent 45%),#0a0a0a';
+  if(!reduce){addEventListener('scroll',depth,{passive:true});depth()}
+}
+</script>
+</body>
+</html>
